@@ -25,8 +25,31 @@ export default function ToDoList() {
     setNewItem("");
   };
 
-  const checkItem = (item: string) => {
-    setCheckedItems((prev) => ({ ...prev, [item]: !prev[item] }));
+  const checkItem = async (item: string) => {
+    const isNowChecked = !checkedItems[item];
+    setCheckedItems((prev) => ({ ...prev, [item]: isNowChecked }));
+
+    if (isNowChecked) {
+      try {
+        const taskId = 1; 
+        
+        const response = await fetch(`http://localhost:8000/api/complete_task/${taskId}/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log(`Success! Reward: ${data.reward_earned}, Goober HP: ${data.pet_hp}`);
+        } else {
+          console.error("Failed to complete task on the backend.");
+        }
+      } catch (error) {
+        console.error("Network error:", error);
+      }
+    }
   };
 
   const removeItem = (item: string) => {
