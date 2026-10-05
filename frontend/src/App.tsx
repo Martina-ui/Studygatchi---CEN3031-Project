@@ -1,13 +1,13 @@
 import "./App.css";
 import { useState } from "react";
 import SettingsMenu from "./components/SettingsMenu";
-import NavBar from "./components/NavBar"; //
+import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import Timer from "./components/Timer";
 import ToDoList from "./ToDoList";
 import GooberMenu from "./components/GooberMenu";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { ThemeProvider } from './components/ThemeProvider';
+import { ThemeProvider } from "./components/ThemeProvider";
 
 function App() {
   // had to add because bootstrap defaults to light mode
@@ -16,7 +16,7 @@ function App() {
   // Current Players data
   const [currentXP, setXP] = useState(50);
   const [level, setLevel] = useState(9);
-  const [money, setMoney] = useState(0);
+  const [money, setMoney] = useState(100);
   const [currentHealth, setHealth] = useState(50);
 
   return (
@@ -32,6 +32,7 @@ function App() {
           <div>
             <NavBar />
           </div>
+
           <GooberMenu
             setXP={setXP}
             setLevel={setLevel}
@@ -42,11 +43,20 @@ function App() {
             money={money}
             currentHealth={currentHealth}
           />
+
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/settings" element={<SettingsMenu />} />
             <Route path="/timer" element={<Timer />} />
-            <Route path="/todo" element={<ToDoList />} />
+            <Route
+              path="/todo"
+              element={
+                <ToDoList
+                  setMoney={setMoney}
+                  setHealth={setHealth}
+                />
+              }
+            />
             <Route path="*" element={<Home />} />
           </Routes>
         </div>
